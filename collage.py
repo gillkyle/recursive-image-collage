@@ -30,26 +30,34 @@ def main(args):
     img_size = (THUMBNAILS_PER_ROW * THUMBNAIL_WIDTH,
                 num_rows * THUMBNAIL_HEIGHT)
     # create a new, RGB image
-    Image.new('RGB', img_size)
+    collage = Image.new('RGB', img_size)
 
+    x = 0
+    y = 0
     # place the thumbnails
     for imgnum, imgpath in enumerate(imgpaths):
-        print(f'=> {imgpath}')
+        paste_position = (THUMBNAIL_WIDTH * x, THUMBNAIL_HEIGHT * y)
         # open the image and convert to RGB
         im = Image.open(imgpath)
+        im.convert('RGB')
         # resize to a thumbnail
         im.thumbnail((THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT))
         # paste in next position
-        im.paste(im, (0, 0))
+        collage.paste(im, paste_position)
+        # if next image would the 5th on this row, move down a row
+        if (imgnum + 1) % 4 == 0:
+            x = 0
+            y += 1
+        else:
+            x += 1
 
     # save the image
     print(f'Writing {args.collage}')
-    im.save(args.collage)
+    collage.save(args.collage)
 
 
 ########################
 # Bootstrap
-
 parser = argparse.ArgumentParser(
     description='Creates a collage by recursively finding images in a directory path')
 parser.add_argument('collage', help='file name to write the collage to')

@@ -29,18 +29,10 @@ def find_images(rootpath, subpath=''):
     or glob.glob).
     '''
     for filename in os.listdir(rootpath):
-        print(filename)
         # if a directory find_images(os.path.join(rootpath, filename))
         fullpath = os.path.join(rootpath, filename)
         if os.path.isdir(fullpath):
             yield from find_images(fullpath)
         # else if a*.png yield it
         elif is_image(fullpath):
-            print('>>>>>>', fullpath)
             yield fullpath
-
-
-# print(is_image('asdf.jpg'))
-# print(is_image('asdf.png'))
-for path in find_images("img"):
-    print(path)

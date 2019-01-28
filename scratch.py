@@ -1,5 +1,6 @@
 import os
 import fnmatch
+from PIL import Image
 
 
 def is_image(filename):
